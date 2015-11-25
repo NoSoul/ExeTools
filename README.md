@@ -1,5 +1,7 @@
 # ExeTools
 for Linux
+## CtrlInput
+usage: ./CtrlInput ConfigFile
 ## FindSameFile
 usage: ./FindSameFile [filetype]
 
