@@ -1,24 +1,17 @@
 # ExeTools
 for Linux
+## CodeForcesAide
+usage: ./CodeForcesAide-suse-linux
 ## CtrlInput
-usage: ./CtrlInput ConfigFile
+usage: ./CtrlInput-suse-linux ConfigFile
 ## FindSameFile
-usage: ./FindSameFile [filetype]
+usage: ./FindSameFile-suse-linux [filetype]
 
 find same pdf file
 
-    ./FindSameFile pdf
+    ./FindSameFile-suse-linux pdf
 find same pdf and docx file
 
-    ./FindSameFile pdf docx
+    ./FindSameFile-suse-linux pdf docx
 ## GetGoogleIP
-usage: ./GetGoogleIP [threadnums]
-## LocalCodeForces
-usage: ./LocalCodeForces Set/Me
-
-get problemset
-
-    ./LocalCodeForces Set
-generate custom index html
-
-    ./LocalCodeForces Me
+usage: ./GetGoogleIP-suse-linux [threadnums]
