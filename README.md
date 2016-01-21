@@ -15,3 +15,5 @@ find same pdf and docx file
     ./FindSameFile-suse-linux pdf docx
 ## GetGoogleIP
 usage: ./GetGoogleIP-suse-linux [threadnums]
+## Scripts
+usage: ./Deploy.sh
