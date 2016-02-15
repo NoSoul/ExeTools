@@ -103,17 +103,6 @@ int GetLevel()
     return ret;
 }
 
-int GetThreadNum()
-{
-    printf("Please input run thread nums(1~%d): ", MAX_GET_THREAD_NUM);
-    int ret = GetNum();
-    if(ret <= 0 || ret > MAX_GET_THREAD_NUM) {
-        puts("thread nums error");
-        ERROR_EXIT;
-    }
-    return ret;
-}
-
 void GetCSS()
 {
     puts("Get CSS File...");
@@ -143,6 +132,17 @@ int GetPages()
     return ret;
 }
 
+int GetStartPageNum(int bound)
+{
+    printf("Please input start page(1~%d): ", bound);
+    int ret = GetNum();
+    if(ret <= 0 || ret > bound) {
+        puts("start page error");
+        ERROR_EXIT;
+    }
+    return ret;
+}
+
 void *Func(void *arg)
 {
     ProblemRes_t *mem = (ProblemRes_t*)arg;
@@ -154,6 +154,7 @@ void *Func(void *arg)
         Problem_t cur = g_Set.front();
         g_Set.erase(g_Set.begin());
         pthread_spin_unlock(&g_Mutex);
+        printf("Try Get %u%s (http://codeforces.com/problemset/problem/%u/%s)\n", cur.m_Div, cur.m_Name, cur.m_Div, cur.m_Name);
         sprintf(mem->m_Cmd, "wget -q http://codeforces.com/problemset/problem/%u/%s -O %u%s.orig", cur.m_Div, cur.m_Name, cur.m_Div, cur.m_Name);
         MySystem(mem->m_Cmd);
         sprintf(mem->m_Cmd, "grep \\\"ttypography %u%s.orig > %u%s.orig.html", cur.m_Div, cur.m_Name, cur.m_Div, cur.m_Name);
@@ -214,7 +215,6 @@ void JudgeGet(Problem_t &cur)
         fclose(fExist);
         return;
     }
-    printf("Try Get %u%s\n", cur.m_Div, cur.m_Name);
     pthread_spin_lock(&g_Mutex);
     g_Set.push_back(cur);
     sem_post(&g_SemRes);
@@ -223,7 +223,7 @@ void JudgeGet(Problem_t &cur)
 
 bool ParserPageOver(int pageIdx, int level)
 {
-    printf("Parser Page %d by SolvedDesc\n", pageIdx);
+    printf("Parser Page %d by SolvedDesc (http://codeforces.com/problemset/page/%d?order=BY_SOLVED_DESC)\n", pageIdx, pageIdx);
     sprintf(g_Temp, "wget -q http://codeforces.com/problemset/page/%d?order=BY_SOLVED_DESC -O %s", pageIdx, TEMP_FILE_NAME);
     MySystem(g_Temp);
     sprintf(g_Temp, "grep problemset/problem %s | cut -d '\"' -f 2 | cut -d '/' -f 4,5", TEMP_FILE_NAME);
@@ -265,9 +265,10 @@ int main()
     sprintf(g_Temp, "mkdir -p %s/problemset && mkdir -p %s/css && mkdir -p %s/images", TARGRT_DIR, TARGRT_DIR, TARGRT_DIR);
     MySystem(g_Temp);
     int level = GetLevel();
-    int threadNum = GetThreadNum();
+    int threadNum = MAX_GET_THREAD_NUM;
     GetCSS();
     int pages = GetPages();
+    int startPage = GetStartPageNum(pages);
 
     sem_init(&g_SemRes, 0, 0);
     pthread_spin_init(&g_Mutex, 0);
@@ -278,7 +279,7 @@ int main()
         pthread_create(&task[i], NULL, Func, &mem[i]);
     }
 
-    for(int i = 1; i <= pages; ++i) {
+    for(int i = startPage; i <= pages; ++i) {
         if(ParserPageOver(i, level)) {
             break;
         }
