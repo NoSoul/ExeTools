@@ -51,7 +51,7 @@ func! Build()
         if expand("%:e") == 'c'
             exec "!gcc-5 -o suse-linux-a -Wall -W -Werror -mavx -g -lm -lpthread % && ./suse-linux-a"
         elseif expand("%:e") == 'cpp'
-            exec "!g++-5 -o suse-linux-a -Wall -W -Werror -mavx -g -lm -lpthread % && ./suse-linux-a"
+            exec "!g++-5 -o suse-linux-a -Wall -W -Werror -mavx -g -std=c++11 -lm -lpthread % && ./suse-linux-a"
         endif
     endif
 endfunc

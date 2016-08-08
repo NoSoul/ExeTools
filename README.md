@@ -1,5 +1,8 @@
 # ExeTools
 for Linux
+## CalUarfcn
+change earfcn to uarfcn
+usage: ./CalUarfcn-suse-linux earfcn
 ## CodeForcesAide
 usage: ./CodeForcesAide-suse-linux
 ## CtrlInput
