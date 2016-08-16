@@ -11,6 +11,7 @@ using namespace std;
 
 #define TARGRT_DIR          "LocalCodeForces"
 #define TEMP_FILE_NAME      "_CFATemp"
+#define SOLVED_FILE_NAME    "_CFASolvedTemp"
 #define ERROR_EXIT          exit(1)
 #define SOLVED_DIR          "/home/nosoul/DEV/Git/NoSoul/CodeForces"
 #define MAX_GET_THREAD_NUM  10
@@ -19,7 +20,7 @@ char g_Temp[TEMP_LEN];
 sem_t g_SemRes;
 pthread_spinlock_t g_Mutex;
 typedef struct {
-    unsigned int m_Div;
+    unsigned m_Div;
     char m_Name[16];
 } Problem_t;
 vector<Problem_t> g_Set;
@@ -143,6 +144,12 @@ int GetStartPageNum(int bound)
     return ret;
 }
 
+void GetAllSolved()
+{
+    sprintf(g_Temp, "find %s/ -name \"*.c\" > %s", SOLVED_DIR, SOLVED_FILE_NAME);
+    MySystem(g_Temp);
+}
+
 void *Func(void *arg)
 {
     ProblemRes_t *mem = (ProblemRes_t*)arg;
@@ -179,7 +186,11 @@ void *Func(void *arg)
                         mem->m_PngPath[j] = mem->m_Content[i + j];
                     }
                     fprintf(fw, "../images/%u%s_%d.png\"", cur.m_Div, cur.m_Name, pngCnt);
-                    sprintf(mem->m_Cmd, "wget -q %s -O %s/images/%u%s_%d.png", mem->m_PngPath, TARGRT_DIR, cur.m_Div, cur.m_Name, pngCnt);
+                    if(strstr(mem->m_PngPath, "codeforces.com") != NULL) {
+                        sprintf(mem->m_Cmd, "wget -q %s -O %s/images/%u%s_%d.png", mem->m_PngPath, TARGRT_DIR, cur.m_Div, cur.m_Name, pngCnt);
+                    } else {
+                        sprintf(mem->m_Cmd, "wget -q http://codeforces.com%s -O %s/images/%u%s_%d.png", mem->m_PngPath, TARGRT_DIR, cur.m_Div, cur.m_Name, pngCnt);
+                    }
                     MySystem(mem->m_Cmd);
                     ++pngCnt;
                     i += strlen(mem->m_PngPath) + 1;
@@ -198,13 +209,12 @@ void *Func(void *arg)
 
 bool UnSolved(Problem_t &cur)
 {
-    sprintf(g_Temp, "%s/%u%s.c", SOLVED_DIR, cur.m_Div, cur.m_Name);
-    FILE *fExist = fopen(g_Temp, "r");
-    if(fExist != NULL) {
-        fclose(fExist);
-        return false;
-    }
-    return true;
+    int ret;
+    sprintf(g_Temp, "awk '/%u%s.c/' %s | wc -l", cur.m_Div, cur.m_Name, SOLVED_FILE_NAME);
+    FILE *fr = popen(g_Temp, "r");
+    while(fscanf(fr, "%d", &ret) != EOF);
+    pclose(fr);
+    return ret == 0;
 }
 
 void JudgeGet(Problem_t &cur)
@@ -269,6 +279,7 @@ int main()
     GetCSS();
     int pages = GetPages();
     int startPage = GetStartPageNum(pages);
+    GetAllSolved();
 
     sem_init(&g_SemRes, 0, 0);
     pthread_spin_init(&g_Mutex, 0);
@@ -305,7 +316,7 @@ int main()
     free(mem);
     pthread_spin_destroy(&g_Mutex);
     sem_destroy(&g_SemRes);
-    sprintf(g_Temp, "rm -f *.html *.orig %s", TEMP_FILE_NAME);
+    sprintf(g_Temp, "rm -f *.html *.orig %s %s", TEMP_FILE_NAME, SOLVED_FILE_NAME);
     MySystem(g_Temp);
     return 0;
 }

@@ -49,9 +49,9 @@ func! Build()
     else
         exec "wall"
         if expand("%:e") == 'c'
-            exec "!gcc-5 -o suse-linux-a -Wall -W -Werror -mavx -g -lm -lpthread % && ./suse-linux-a"
+            exec "!gcc-7 -o suse-linux-a -Wall -W -Werror -mavx -g -lm -lpthread % && ./suse-linux-a"
         elseif expand("%:e") == 'cpp'
-            exec "!g++-5 -o suse-linux-a -Wall -W -Werror -mavx -g -std=c++11 -lm -lpthread % && ./suse-linux-a"
+            exec "!g++-7 -o suse-linux-a -Wall -W -Werror -mavx -g -std=c++11 -lm -lpthread % && ./suse-linux-a"
         endif
     endif
 endfunc
@@ -78,7 +78,7 @@ vmap <C-c> <ESC>:cs find c <C-R>=expand("<cword>")<CR><CR>
 autocmd BufNewFile *.{cpp,c,h} exec ":call AddSourceFileHeader()"
 func! AddSourceFileHeader()
     call setline(1, "/*******************************************************************************")
-    call setline(2, "Copyright: 2016, Innovem Tech. Co., Ltd.")
+    call setline(2, "Copyright: 2017, Innovem Tech. Co., Ltd.")
     call setline(3, "FileName: ".expand("%:t"))
     call setline(4, "*******************************************************************************/")
     if expand("%:e") == 'h'
