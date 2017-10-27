@@ -2,6 +2,7 @@
 CCFLAG="-O2 -W -Wall -Werror"
 LDFLAG="-lpthread"
 SUFFIX="-suse-linux"
+g++ -o ArchivingCodeForces$SUFFIX $CCFLAG ArchivingCodeForces/ArchivingCodeForces.cpp $LDFLAG
 g++ -o CodeForcesAide$SUFFIX $CCFLAG CodeForcesAide/CodeForcesAide.cpp $LDFLAG
 gcc -o CtrlInput$SUFFIX $CCFLAG CtrlInput/CtrlInput.c $LDFLAG
 gcc -o FindSameFile$SUFFIX $CCFLAG FindSameFile/FindSameFile.c $LDFLAG

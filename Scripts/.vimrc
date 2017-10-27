@@ -1,7 +1,7 @@
 set hlsearch "选中高亮
 colorscheme desert "颜色主题
 set noendofline "禁用文件尾新加一行
-set guifont=Source\ Code\ Pro\ 10 "设置字体
+set guifont=Source\ Code\ Pro\ 14 "设置字体
 "set number "显示行号
 set tabstop=4 "制表符
 set expandtab "tab使用空格
