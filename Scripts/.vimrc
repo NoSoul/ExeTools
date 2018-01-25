@@ -1,5 +1,4 @@
 set hlsearch "选中高亮
-colorscheme desert "颜色主题
 set noendofline "禁用文件尾新加一行
 set guifont=Source\ Code\ Pro\ 14 "设置字体
 "set number "显示行号
@@ -78,7 +77,7 @@ vmap <C-c> <ESC>:cs find c <C-R>=expand("<cword>")<CR><CR>
 autocmd BufNewFile *.{cpp,c,h} exec ":call AddSourceFileHeader()"
 func! AddSourceFileHeader()
     call setline(1, "/*******************************************************************************")
-    call setline(2, "Copyright: 2017, Innovem Tech. Co., Ltd.")
+    call setline(2, "Copyright: 2018, Innovem Tech. Co., Ltd.")
     call setline(3, "FileName: ".expand("%:t"))
     call setline(4, "*******************************************************************************/")
     if expand("%:e") == 'h'

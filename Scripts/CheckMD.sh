@@ -1,6 +1,6 @@
 #! /bin/sh
 rm -f testmd*.html
-browers=firefox
+browers=chromium
 if [ $# -eq 0 ];then
     echo "<meta http-equiv="Content-Type" content="text/html\; charset=utf-8">" > testmd0.html
     markdown *.md -o checkmdtemp.html && cat checkmdtemp.html >> testmd0.html && rm checkmdtemp.html && $browers testmd0.html 
