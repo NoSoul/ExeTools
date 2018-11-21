@@ -1,7 +1,5 @@
 set hlsearch "选中高亮
 set noendofline "禁用文件尾新加一行
-set guifont=Source\ Code\ Pro\ 14 "设置字体
-"set number "显示行号
 set tabstop=4 "制表符
 set expandtab "tab使用空格
 set shiftwidth=4 "缩进空格
@@ -13,22 +11,21 @@ set foldmethod=indent "代码折叠
 set mousemodel=popup "右键弹出菜单
 set viminfo= "关闭历史记录
 set noswapfile  "不生成swap文件
-set guioptions-=m "隐藏菜单栏
-set guioptions-=T "隐藏工具栏
-set guioptions-=r "隐藏右侧滚动条
-set guioptions-=L "隐藏左侧滚动条
 set makeprg=./Build.sh "设置:make命令
-"set autochdir "自动切换工作目录
 set autoread "自动读取文件
+"set number "显示行号
+"set guifont=Source\ Code\ Pro\ 14 "设置字体
+"set guioptions-=m "隐藏菜单栏
+"set guioptions-=T "隐藏工具栏
+"set guioptions-=r "隐藏右侧滚动条
+"set guioptions-=L "隐藏左侧滚动条
+"set autochdir "自动切换工作目录
 filetype plugin indent on "打开文件类型检测、插件、缩进
-"C/C++文件使用80字符提示
-"autocmd BufRead,BufNewFile *.{cpp,c,h} set tw=80
-"autocmd BufRead,BufNewFile *.{cpp,c,h} set cc=81
 "三种模式下的键映射---<F3>AStyle C/C++文件
 func! AStyle()
     if &filetype == 'c' || &filetype == 'cpp'
         exec "wall"
-        exec "!astyle --style=kr -p --suffix=none %"
+        exec "!astyle --style=kr --align-pointer=name --lineend=linux -cnpU %"
     endif
     exec "e! %"
 endfunc
@@ -48,9 +45,9 @@ func! Build()
     else
         exec "wall"
         if expand("%:e") == 'c'
-            exec "!gcc-7 -o suse-linux-a -Wall -W -Werror -mavx -g -lm -lpthread % && ./suse-linux-a"
+            exec "!gcc -o suse-linux-a -D_REENTRANT -std=c99   -W -mavx2 -g -lm -lpthread % && ./suse-linux-a"
         elseif expand("%:e") == 'cpp'
-            exec "!g++-7 -o suse-linux-a -Wall -W -Werror -mavx -g -std=c++11 -lm -lpthread % && ./suse-linux-a"
+            exec "!g++ -o suse-linux-a -D_REENTRANT -std=c++11 -W -mavx2 -g -lm -lpthread % && ./suse-linux-a"
         endif
     endif
 endfunc
