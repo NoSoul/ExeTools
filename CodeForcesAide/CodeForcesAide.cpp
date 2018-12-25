@@ -42,7 +42,7 @@ static int VSystem(const char *cmdstring)
     if((pid = vfork()) < 0) {
         status = -1;
     } else if(pid == 0) {
-        execl("/bin/sh", "sh", "-c", cmdstring, (char*)0);
+        execl("/bin/sh", "sh", "-c", cmdstring, (char *)0);
         _exit(127);
     } else {
         while(waitpid(pid, &status, 0) < 0) {
@@ -152,7 +152,7 @@ void GetAllSolved()
 
 void *Func(void *arg)
 {
-    ProblemRes_t *mem = (ProblemRes_t*)arg;
+    ProblemRes_t *mem = (ProblemRes_t *)arg;
     while(1) {
         g_TaskIDLE[mem->m_Idx] = true;
         sem_wait(&g_SemRes);
@@ -210,7 +210,7 @@ void *Func(void *arg)
 bool UnSolved(Problem_t &cur)
 {
     int ret;
-    sprintf(g_Temp, "awk '/%u%s.c/' %s | wc -l", cur.m_Div, cur.m_Name, SOLVED_FILE_NAME);
+    sprintf(g_Temp, "awk '/\\<%u%s.c/' %s | wc -l", cur.m_Div, cur.m_Name, SOLVED_FILE_NAME);
     FILE *fr = popen(g_Temp, "r");
     while(fscanf(fr, "%d", &ret) != EOF);
     pclose(fr);
@@ -233,8 +233,8 @@ void JudgeGet(Problem_t &cur)
 
 bool ParserPageOver(int pageIdx, int level)
 {
-    printf("Parser Page %d by SolvedDesc (http://codeforces.com/problemset/page/%d?order=BY_SOLVED_DESC)\n", pageIdx, pageIdx);
-    sprintf(g_Temp, "wget -q http://codeforces.com/problemset/page/%d?order=BY_SOLVED_DESC -O %s", pageIdx, TEMP_FILE_NAME);
+    printf("Parser Page %d by SolvedDesc (http://codeforces.com/problemset/page/%d?tags=500-5000&order=BY_RATING_ASC)\n", pageIdx, pageIdx);
+    sprintf(g_Temp, "wget -q \"http://codeforces.com/problemset/page/%d?tags=500-5000&order=BY_RATING_ASC\" -O %s", pageIdx, TEMP_FILE_NAME);
     MySystem(g_Temp);
     sprintf(g_Temp, "grep problemset/problem %s | cut -d '\"' -f 2 | cut -d '/' -f 4,5", TEMP_FILE_NAME);
     FILE *fr = popen(g_Temp, "r");
@@ -283,8 +283,8 @@ int main()
 
     sem_init(&g_SemRes, 0, 0);
     pthread_spin_init(&g_Mutex, 0);
-    ProblemRes_t *mem = (ProblemRes_t*)malloc(threadNum * sizeof(ProblemRes_t));
-    pthread_t *task = (pthread_t*)malloc(threadNum * sizeof(pthread_t));
+    ProblemRes_t *mem = (ProblemRes_t *)malloc(threadNum * sizeof(ProblemRes_t));
+    pthread_t *task = (pthread_t *)malloc(threadNum * sizeof(pthread_t));
     for(int i = 0; i < threadNum; ++i) {
         mem[i].m_Idx = i;
         pthread_create(&task[i], NULL, Func, &mem[i]);
