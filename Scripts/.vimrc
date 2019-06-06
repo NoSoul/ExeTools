@@ -39,15 +39,15 @@ vmap <F4> <ESC>:AV<CR>
 "三种模式下的键映射---<F5>一键Build
 func! Build()
     if filereadable("Build.sh")
-    	exec "wall"
-	    exec "make"
-	    exec "cw"
+        exec "wall"
+        exec "make"
+        exec "cw"
     else
         exec "wall"
         if expand("%:e") == 'c'
-            exec "!gcc -o suse-linux-a -D_REENTRANT -std=c99   -W -mavx2 -g -lm -lpthread % && ./suse-linux-a"
+            exec "!gcc -o suse-linux-a -D_REENTRANT -std=c99   -W -mavx2 -O3 -lm -lpthread % && ./suse-linux-a"
         elseif expand("%:e") == 'cpp'
-            exec "!g++ -o suse-linux-a -D_REENTRANT -std=c++11 -W -mavx2 -g -lm -lpthread % && ./suse-linux-a"
+            exec "!g++ -o suse-linux-a -D_REENTRANT -std=c++11 -W -mavx2 -O3 -lm -lpthread % && ./suse-linux-a"
         endif
     endif
 endfunc
@@ -74,13 +74,23 @@ vmap <C-c> <ESC>:cs find c <C-R>=expand("<cword>")<CR><CR>
 autocmd BufNewFile *.{cpp,c,h} exec ":call AddSourceFileHeader()"
 func! AddSourceFileHeader()
     call setline(1, "/*******************************************************************************")
-    call setline(2, "Copyright: 2018, Innovem Tech. Co., Ltd.")
+    call setline(2, "Copyright: 2019, Innovem Tech. Co., Ltd.")
     call setline(3, "FileName: ".expand("%:t"))
     call setline(4, "*******************************************************************************/")
     if expand("%:e") == 'h'
         call setline(5, "#ifndef _".expand("%:t:r").expand("_H_"))
         call setline(6, "#define _".expand("%:t:r").expand("_H_"))
-        call setline(7, "#endif")
+        call setline(7, "class ".expand("%:t:r").expand(""))
+        call setline(8, "{")
+        call setline(9, "public:")
+        call setline(10, "\t".expand("%:t:r").expand("();"))
+        call setline(11, "\t~".expand("%:t:r").expand("();"))
+        call setline(12, "protected:")
+        call setline(13, "private:")
+        call setline(14, "\t".expand("%:t:r").expand("(const ").expand("%:t:r").expand("&) = delete;"))
+        call setline(15, "\t".expand("%:t:r").expand(" &operator=(const ").expand("%:t:r").expand(" &) = delete;"))
+        call setline(16, "};")
+        call setline(17, "#endif")
     endif
 endfunc
 "新建文件自动定位文件末尾
