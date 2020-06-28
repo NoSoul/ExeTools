@@ -26,7 +26,7 @@ typedef struct {
 vector<Problem_t> g_Set;
 typedef struct {
     unsigned char m_Idx;
-    char m_Cmd[1024];
+    char m_Cmd[1024 * 2];
     char m_Content[5 * 1024 * 1024];
     char m_PngPath[1024];
 } ProblemRes_t;

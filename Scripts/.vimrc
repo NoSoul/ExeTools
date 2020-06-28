@@ -41,7 +41,6 @@ func! Build()
     if filereadable("Build.sh")
         exec "wall"
         exec "make"
-        exec "cw"
     else
         exec "wall"
         if expand("%:e") == 'c'
@@ -74,7 +73,7 @@ vmap <C-c> <ESC>:cs find c <C-R>=expand("<cword>")<CR><CR>
 autocmd BufNewFile *.{cpp,c,h} exec ":call AddSourceFileHeader()"
 func! AddSourceFileHeader()
     call setline(1, "/*******************************************************************************")
-    call setline(2, "Copyright: 2019, Innovem Tech. Co., Ltd.")
+    call setline(2, "Copyright: 2020, Innovem Tech. Co., Ltd.")
     call setline(3, "FileName: ".expand("%:t"))
     call setline(4, "*******************************************************************************/")
     if expand("%:e") == 'h'

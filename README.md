@@ -10,6 +10,8 @@ usage: ./CalUarfcn-suse-linux earfcn
 usage: ./CodeForcesAide-suse-linux
 ## CtrlInput
 usage: ./CtrlInput-suse-linux ConfigFile
+## Duplicate
+usage: ./Duplicate-suse-linux init delta times ratio
 ## FindSameFile
 usage: ./FindSameFile-suse-linux [filetype]
 
