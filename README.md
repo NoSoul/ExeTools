@@ -3,6 +3,9 @@ for Linux
 ## ArchivingCodeForces
 archiving CodeForces source code 
 usage: ./ArchivingCodeForces-suse-linux
+## AnalysisFund
+Analysis Chinese Fund
+usage: ./AnalysisFund-suse-linux
 ## CalUarfcn
 change earfcn to uarfcn
 usage: ./CalUarfcn-suse-linux earfcn
