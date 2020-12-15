@@ -1,3 +1,6 @@
+syntax on "打开高亮
+set nocompatible "关闭一致性模式
+set backspace=indent,eol,start "退格键
 set hlsearch "选中高亮
 set noendofline "禁用文件尾新加一行
 set tabstop=4 "制表符
@@ -13,7 +16,7 @@ set viminfo= "关闭历史记录
 set noswapfile  "不生成swap文件
 set makeprg=./Build.sh "设置:make命令
 set autoread "自动读取文件
-"set number "显示行号
+set number "显示行号
 "set guifont=Source\ Code\ Pro\ 14 "设置字体
 "set guioptions-=m "隐藏菜单栏
 "set guioptions-=T "隐藏工具栏
