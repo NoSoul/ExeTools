@@ -17,6 +17,9 @@ set noswapfile  "不生成swap文件
 set makeprg=./Build.sh "设置:make命令
 set autoread "自动读取文件
 set number "显示行号
+set ruler "显示列号
+set laststatus=2 "显示文件路径
+"set nocscopeverbose "防止重复添加cscope
 "set guifont=Source\ Code\ Pro\ 14 "设置字体
 "set guioptions-=m "隐藏菜单栏
 "set guioptions-=T "隐藏工具栏
@@ -28,7 +31,7 @@ filetype plugin indent on "打开文件类型检测、插件、缩进
 func! AStyle()
     if &filetype == 'c' || &filetype == 'cpp'
         exec "wall"
-        exec "!astyle --style=kr --align-pointer=name --lineend=linux -cnpU %"
+        exec "!astyle -A3 -k3 -z2 -xe -cnpU %"
     endif
     exec "e! %"
 endfunc
@@ -49,7 +52,7 @@ func! Build()
         if expand("%:e") == 'c'
             exec "!gcc -o suse-linux-a -D_REENTRANT -std=c99   -W -mavx2 -O3 -lm -lpthread % && ./suse-linux-a"
         elseif expand("%:e") == 'cpp'
-            exec "!g++ -o suse-linux-a -D_REENTRANT -std=c++11 -W -mavx2 -O3 -lm -lpthread % && ./suse-linux-a"
+            exec "!g++ -o suse-linux-a -D_REENTRANT -std=c++17 -W -mavx2 -O3 -lm -lpthread % && ./suse-linux-a"
         endif
     endif
 endfunc
@@ -76,7 +79,7 @@ vmap <C-c> <ESC>:cs find c <C-R>=expand("<cword>")<CR><CR>
 autocmd BufNewFile *.{cpp,c,h} exec ":call AddSourceFileHeader()"
 func! AddSourceFileHeader()
     call setline(1, "/*******************************************************************************")
-    call setline(2, "Copyright: 2020, Innovem Tech. Co., Ltd.")
+    call setline(2, "Copyright: 2023, Innovem Tech. Co., Ltd.")
     call setline(3, "FileName: ".expand("%:t"))
     call setline(4, "*******************************************************************************/")
     if expand("%:e") == 'h'
@@ -86,7 +89,7 @@ func! AddSourceFileHeader()
         call setline(8, "{")
         call setline(9, "public:")
         call setline(10, "\t".expand("%:t:r").expand("();"))
-        call setline(11, "\t~".expand("%:t:r").expand("();"))
+        call setline(11, "\tvirtual ~".expand("%:t:r").expand("();"))
         call setline(12, "protected:")
         call setline(13, "private:")
         call setline(14, "\t".expand("%:t:r").expand("(const ").expand("%:t:r").expand("&) = delete;"))
